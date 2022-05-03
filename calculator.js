@@ -17,9 +17,10 @@ let inputs = "";
 
 Array.from(numberButtons).forEach((e) => {
     e.addEventListener("click", function() {
-        backinputsNum.push(e.innerHTML);
-        topscreen.innerHTML += e.innerHTML;
-        bottomscreen.innerHTML = e.innerHTML;
+        inputs += e.innerHTML;
+        bottomscreen.innerHTML = inputs;
+        console.log(backinputsNum);
+        console.log(backinputsOperators);
     });
 })
 
@@ -27,17 +28,33 @@ Array.from(operationButtons).forEach((e) => {
     e.addEventListener("click", () => operation(e));
 });
 
+let trigger = false;
+
 equalsButton.addEventListener("click", function() {
+    backinputsNum.push(inputs);
+    inputsDisplay += inputs;
+    inputs = "";
+
+    
     backinputsNum.push(newv = (bottomscreen.innerHTML = execute(backinputsNum,backinputsOperators)));
     topscreen.innerHTML = newv;
-
+    trigger = true;
 });
 
-function operation(e){
-    backinputsOperators.push(e.innerHTML);
-    topscreen.innerHTML += e.innerHTML;
-    bottomscreen.innerHTML = "";
 
+function operation(e){
+    if (!trigger){
+        backinputsNum.push(inputs);
+        inputsDisplay += inputs;
+    }
+    inputsDisplay += e.innerHTML;
+    inputs = "";
+
+    backinputsOperators.push(e.innerHTML);
+
+    topscreen.innerHTML = inputsDisplay;
+    bottomscreen.innerHTML = "";
+    
 }
 
 function execute(arrN, arrO){
